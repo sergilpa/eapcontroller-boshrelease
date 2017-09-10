@@ -1,0 +1,5 @@
+check process eapcontroller matching "tp-link"
+  start program "/var/vcap/jobs/eapcontroller/bin/ctl start"
+  stop program "/var/vcap/jobs/eapcontroller/bin/ctl stop"
+  group vcap
+

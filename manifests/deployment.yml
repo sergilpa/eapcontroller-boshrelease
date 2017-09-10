@@ -1,0 +1,32 @@
+---
+name: eap
+
+releases:
+- name: eapcontroller
+  version: latest
+
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+
+instance_groups:
+- name: eap
+  instances: 1
+  stemcell: default
+  vm_type: default
+  azs: [z1]
+  persistent_disk_type: default
+  networks:
+  - name: default
+  jobs:
+  - name: eapcontroller
+    release: eapcontroller
+    properties: {}
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  serial: false
+  canary_watch_time: 1000-60000
+  update_watch_time: 1000-60000

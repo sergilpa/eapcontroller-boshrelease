@@ -1,0 +1,11 @@
+---
+name: eapcontroller
+
+templates:
+  pre-start.sh: bin/pre-start
+  ctl.sh: bin/ctl
+
+packages:
+  - eapcontroller
+
+properties: {}

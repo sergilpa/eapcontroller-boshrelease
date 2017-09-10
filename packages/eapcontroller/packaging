@@ -1,0 +1,12 @@
+set -e -x
+
+echo "Extracting eapcontroller..."
+eap_dir=eapcontroller-extract
+mkdir -p ${eap_dir}
+tar xzvf eapcontroller/eapcontroller-2.4.8.tar.gz -C ${eap_dir}
+
+echo "Building eapcontroller..."
+
+pushd ${eap_dir}
+  cp -a . ${BOSH_INSTALL_TARGET}
+popd
