@@ -11,3 +11,5 @@ This is a personal BOSH release that I am making publicly available
 
 # TODO
 * [] add errand to create a backup of data directory/restore data directory if relocating
+* [] manifest for incorporating nginx release to do reverse proxy with valid certificate
+  * [x] pre-start will extract the certificate from eap controller and store in in /var/vcap/store/eap/eapstore.crt
