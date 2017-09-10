@@ -38,3 +38,12 @@ fi
 echo "tplink" | $package_location/jre/bin/keytool -export -alias eap -file /var/vcap/store/eap/eapstore.crt -keystore $package_location/keystore/eap.keystore
 openssl x509 -inform der -in /var/vcap/store/eap/eapstore.crt -out /var/vcap/store/eap/eapstore.pem
 rm /var/vcap/store/eap/eapstore.crt
+
+<% if_p('ssl.key','ssl.crt') do |sslkey,sslcrt| -%>
+cat > /var/vcap/store/eap/server.key << EOF
+<%= sslkey %>
+EOF
+cat > /var/vcap/store/eap/server.crt << EOF
+<%= sslcrt %>
+EOF
+<% end -%>

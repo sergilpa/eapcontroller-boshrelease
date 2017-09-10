@@ -8,4 +8,10 @@ templates:
 packages:
   - eapcontroller
 
-properties: {}
+properties:
+  ssl.key:
+    description: ssl key for proxy
+    optional: true
+  ssl.crt:
+    description: ssl crt for proxy
+    optional: true
