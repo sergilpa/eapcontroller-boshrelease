@@ -16,3 +16,4 @@ ci/vars.yml
 .envrc
 .mach
 manifests/private.yml
+vars/private.yml

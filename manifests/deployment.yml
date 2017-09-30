@@ -23,6 +23,14 @@ instance_groups:
   - name: eapcontroller
     release: eapcontroller
     properties: {}
+  - name: backup
+    release: eapcontroller
+    properties:
+      backup_priv: ((backup.private_key))
+
+variables:
+  - name: backup
+    type: ssh
 
 update:
   canaries: 1

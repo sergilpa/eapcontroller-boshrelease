@@ -1,0 +1,20 @@
+---
+name: backup
+
+templates:
+  backup.sh: bin/backup
+  run.sh: bin/run
+
+packages: []
+
+properties:
+  s3_bucket:
+    description: name of bucket
+  s3_region:
+    description: name of region
+  s3_access_key:
+    description: s3 access key
+  s3_secret_key:
+    description: s3 secret key
+  backup_priv:
+    description: private key
