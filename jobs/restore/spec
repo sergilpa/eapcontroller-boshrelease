@@ -1,0 +1,14 @@
+---
+name: restore
+
+templates:
+  restore.sh: bin/restore
+  run.sh: bin/run
+
+consumes:
+ - name: eap_backup
+   type: eap_backup
+
+packages: []
+
+properties: {}

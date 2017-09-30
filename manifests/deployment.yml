@@ -27,6 +27,8 @@ instance_groups:
     release: eapcontroller
     properties:
       backup_priv: ((backup.private_key))
+  - name: restore
+    release: eapcontroller
 
 variables:
   - name: backup

@@ -7,6 +7,16 @@ templates:
 
 packages: []
 
+provides:
+  - name: eap_backup
+    type: eap_backup
+    properties:
+    - s3_bucket
+    - s3_region
+    - s3_access_key
+    - s3_secret_key
+    - backup_priv
+
 properties:
   s3_bucket:
     description: name of bucket

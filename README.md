@@ -38,15 +38,33 @@ instance_groups:
           s3_secret_key: <secret_key>
           backup_priv: ((backup.private_key))
 ```
+
+# Restore configuration
+Run the errand restore to download a previously uploaded backup from an s3 bucket
+Define the following in manifest
+```
+instance_groups:
+  - name: eap
+    jobs:
+      - name: restore
+        release: eapconroller
+```
+
 # Deploy
 ```
 bosh deploy manifests/deployment.yml -o manifests/private.yml --vars-store=vars/private.yml
 ```
-This will generate the SSH key for backups automatically, keep it somewhere safe or else you won't be able to recover any backups!
+This will generate the SSH key for backups automatically, keep it `vars/private.yml` somewhere safe or else you won't be able to recover any backups!
 
-# TODO
-* [ ] add errand to
-  * [x] create a backup of data directory
-  * [ ] restore data directory if relocating
-* [x] manifest for incorporating nginx release to do reverse proxy with valid certificate
-  * [x] pre-start will extract the certificate from eap controller and store in in /var/vcap/store/eap/eapstore.crt
+## Run backup
+```
+bosh run-errand backup
+```
+
+## Run restore
+```
+bosh run-errand restore
+```
+
+# Thanks
+If you like this release, and end up using it, let me know. I'm open for feedback
