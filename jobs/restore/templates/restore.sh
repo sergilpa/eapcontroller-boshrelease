@@ -90,5 +90,34 @@ pushd /var/vcap/store/
   /var/vcap/jobs/eapcontroller/bin/ctl start
 popd
 
+# Create query to find changes to package hash
+cat << EOF > fixmaps.js
+db.map.find({"filePath" : {\$regex : ".*/var/vcap/data/packages/eapcontroller/.*"}},{ _id: 1, filePath: 1});
+EOF
+
+# Run query and generate update commands with new hash
+/var/vcap/packages/eapcontroller/bin/mongo --quiet tpeap < fixmaps.js | while read line
+do
+mongo_id=$(echo $line | grep -Po '"_id" : .*?[^\\]".*"\)')
+new_hash=$(ls /var/vcap/data/packages/eapcontroller/)
+old_hash=$(echo $line | grep -Po '"filePath" : .*?[^\\]"' | awk '{print $3}' | grep -o -E -e "[a-f0-9]{40}")
+mongo_file=$(echo $line | grep -Po '"filePath" : .*?[^\\]"' | sed "s/${old_hash}/${new_hash}/g" )
+
+cat << EOF
+db.map.update(
+  { ${mongo_id}},
+  {
+    \$set: {
+    ${mongo_file}
+    }
+  }
+)
+EOF
+done > updatemaps.js
+# Run the query
+/var/vcap/packages/eapcontroller/bin/mongo --quiet tpeap < updatemaps.js
+
 echo "Cleanup"
 rm -rf /var/vcap/store/restore
+rm updatemaps.js
+rm fixmaps.js

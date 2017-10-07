@@ -17,3 +17,4 @@ ci/vars.yml
 .mach
 manifests/private.yml
 vars/private.yml
+*.ign
