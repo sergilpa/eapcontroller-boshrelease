@@ -32,6 +32,15 @@
                        proxy_ssl_trusted_certificate /var/vcap/store/eap/eapstore.pem;
                        proxy_ssl_verify off;
                      }
+      - server_name: eap.example.com
+        docroot: /var/vcap/store/nginx/www/document_root
+        port: "80"
+        index: "index.php index.html index.htm"
+        access_log: /var/vcap/sys/log/nginx/access.log
+        error_log: /var/vcap/sys/log/nginx/error.log
+        custom_data: |
+                     return 301 https://$server_name$request_uri;
+
 
 - type: replace
   path: /instance_groups/name=eap/jobs/name=eapcontroller/properties?/ssl?/key?
