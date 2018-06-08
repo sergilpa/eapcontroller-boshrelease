@@ -1,0 +1,69 @@
+---
+- type: replace
+  path: /instance_groups/name=eap/networks/name=default/default?
+  value: [dns, gateway]
+
+- type: replace
+  path: /instance_groups/name=eap/networks/name=default/name
+  value: internal-network
+
+- type: replace
+  path: /instance_groups/name=eap/persistent_disk_type
+  value: micro
+
+- type: replace
+  path: /releases/name=nginx?
+  value:
+    name: nginx
+    version: latest
+
+- type: replace
+  path: /instance_groups/name=eap/jobs/name=nginx?
+  value:
+    name: nginx
+    release: nginx
+    properties:
+      nginx_user: vcap
+      nginx_worker_processes: 2
+      nginx_worker_connections: 1024
+      nginx_servers:
+      - server_name: eapcontroller.local
+        docroot: /var/vcap/store/nginx/www/document_root
+        port: "443 ssl"
+        index: "index.php index.html index.htm"
+        access_log: /var/vcap/sys/log/nginx/access.log
+        error_log: /var/vcap/sys/log/nginx/error.log
+        custom_data: |
+                     ssl_certificate /var/vcap/store/eap/server.crt;
+                     ssl_certificate_key /var/vcap/store/eap/server.key;
+                     ssl_verify_client off;
+                     location / {
+                       proxy_pass                    https://localhost:8043/;
+                       proxy_ssl_trusted_certificate /var/vcap/store/eap/eapstore.pem;
+                       proxy_ssl_verify              off;
+                     }
+- type: replace
+  path: /instance_groups/name=eap/jobs/name=eapcontroller/properties?/ssl?/key?
+  value: |
+         -----BEGIN PRIVATE KEY-----
+         -----END PRIVATE KEY-----
+- type: replace
+  path: /instance_groups/name=eap/jobs/name=eapcontroller/properties?/ssl?/crt?
+  value: |
+         -----BEGIN CERTIFICATE-----
+         -----END CERTIFICATE-----
+- type: replace
+  path: /instance_groups/name=eap/jobs/name=backup?/properties?/s3_bucket?
+  value: bucket
+
+- type: replace
+  path: /instance_groups/name=eap/jobs/name=backup?/properties?/s3_access_key?
+  value: accesskey
+
+- type: replace
+  path: /instance_groups/name=eap/jobs/name=backup?/properties?/s3_secret_key?
+  value: secretkey
+
+- type: replace
+  path: /instance_groups/name=eap/jobs/name=backup?/properties?/s3_region?
+  value: us-west-2
