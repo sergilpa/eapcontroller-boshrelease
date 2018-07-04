@@ -38,7 +38,7 @@
                      ssl_certificate_key /var/vcap/store/eap/server.key;
                      ssl_verify_client off;
                      location / {
-                       proxy_pass                    https://localhost:8043/;
+                       proxy_pass                    https://localhost:80/;
                        proxy_ssl_trusted_certificate /var/vcap/store/eap/eapstore.pem;
                        proxy_ssl_verify              off;
                      }
